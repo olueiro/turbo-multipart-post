@@ -2,7 +2,7 @@ package = "turbo-multipart-post"
 version = "0.1-1"
 
 source = {
- url = "",
+ url = "git://github.com/olueiro/turbo-multipart-post.git",
  branch = "master"
 }
 
@@ -11,7 +11,7 @@ description = {
  detailed = [[
 Turbo.lua multipart encoder
 ]],
- homepage = "",
+ homepage = "https://github.com/olueiro/turbo-multipart-post",
  license = "MIT"
 }
 
