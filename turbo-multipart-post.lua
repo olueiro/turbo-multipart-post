@@ -20,9 +20,10 @@ SOFTWARE.
 
 local multipart = {}
 
-multipart.encoder = function(turbo, parts)
+multipart.encoder = function(turbo, parts, tableParser)
+  tableParser = tableParser or tostring
   local data = {}
-  local boundary = turbo.util.rand_str(30)
+  local boundary = (turbo.util.rand_str(128)):gsub("%W+", "") .. "BoUnDaRy"
   for key, value in pairs(parts) do
     data[#data + 1] = "--" .. boundary .. "\r\n"
     data[#data + 1] = "Content-Disposition: form-data; name=\"" .. key .. "\""
@@ -32,12 +33,11 @@ multipart.encoder = function(turbo, parts)
       data[#data + 1] = "Content-Transfer-Encoding: binary\r\n"
       data[#data + 1] = "\r\n"
       data[#data + 1] = value.data
-      data[#data + 1] = "\r\n"
     else
       data[#data + 1] = "\r\n\r\n"
-      data[#data + 1] = tostring(value)
-      data[#data + 1] = "\r\n"
+      data[#data + 1] = type(value) == "table" and tableParser(value) or tostring(value)
     end
+    data[#data + 1] = "\r\n"
   end
   data[#data + 1] = "--" .. boundary .. "--\r\n\r\n"
   return table.concat(data), "multipart/form-data; boundary=" .. boundary, boundary, "multipart/form-data"
