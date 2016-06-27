@@ -23,7 +23,7 @@ local multipart = {}
 multipart.encoder = function(turbo, parts, tableParser)
   tableParser = tableParser or tostring
   local data = {}
-  local boundary = (turbo.util.rand_str(128)):gsub("%W+", "") .. "BoUnDaRy"
+  local boundary = turbo.hash.SHA1(turbo.util.rand_str()):hex()
   for key, value in pairs(parts) do
     data[#data + 1] = "--" .. boundary .. "\r\n"
     data[#data + 1] = "Content-Disposition: form-data; name=\"" .. key .. "\""
