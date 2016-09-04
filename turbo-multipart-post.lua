@@ -43,10 +43,10 @@ multipart.encoder = function(turbo, parts, tableParser)
   return table.concat(data), "multipart/form-data; boundary=" .. boundary, boundary, "multipart/form-data"
 end
 
-multipart.file = function(turbo, path, mime)
+multipart.file = function(turbo, path, name, mime)
   return {
     __type = "file",
-    name = path:match(".-([ %w%-%.]+)$") or "unknown",
+    name = name or path:match(".-([ %w%-%.]+)$") or "unknown",
     mime = mime or "application/octet-stream",
     data = turbo.util.read_all(path)
   }
